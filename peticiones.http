@@ -1,0 +1,36 @@
+@urlbase=http://localhost:3000
+@urlHealth={{urlbase}}/health
+@urlUser={{urlbase}}/usuarios
+
+
+### Health
+GET {{urlHealth}}
+
+###
+
+### Crear usuario
+POST {{urlUser}}
+Content-Type: application/json
+
+{
+  "nombre": "Coni",
+  "email": "coni@gmail.com",
+  "password": "1234",
+  "rol": "ALUMNO"
+}
+
+###
+
+### Login
+POST {{urlUser}}/login
+Content-Type: application/json
+
+{
+  "email": "coni@gmail.com",
+  "password": "1234"
+}
+
+###
+
+### Obtener usuarios
+GET http://localhost:3000/usuarios
