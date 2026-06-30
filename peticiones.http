@@ -96,18 +96,17 @@ DELETE {{urlMateria}}/ID_DE_LA_MATERIA
 
 ### Inscribir alumno
 
-POST {{urlAlumnoMateria}}
+POST {{urlbase}}/cursan
 Content-Type: application/json
 
 {
     "alumno_id":"20023c8d-1d71-461a-80f7-7b53cc79412e",
     "materia_id":"0d1b2e32-a29c-422a-9528-df3f2f045b27"
 }
-
 ### Ver inscripciones
 
 GET {{urlAlumnoMateria}}
 
 ### Materias que dicta un profesor
 
-GET {{urlMateria}}/profesor/e4e824bb-0094-4616-9bea-2769a60ebe0d
+GET {{urlbase}}/dictan/e4e824bb-0094-4616-9bea-2769a60ebe0d
