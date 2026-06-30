@@ -1,8 +1,8 @@
-@urlbase=http://localhost:3000
+@urlbase=https://backtrenconi.vercel.app
 @urlHealth={{urlbase}}/health
 @urlUser={{urlbase}}/usuarios
-
-
+@urlMateria={{urlbase}}/materias
+@urlAlumnoMateria={{urlbase}}/alumno-materia
 ### Health
 GET {{urlHealth}}
 
@@ -13,9 +13,9 @@ POST {{urlUser}}
 Content-Type: application/json
 
 {
-  "nombre": "Coni",
-  "email": "coni@gmail.com",
-  "password": "1234",
+  "nombre": "Juan",
+  "email": "juan@gmail.com",
+  "password": "123",
   "rol": "ALUMNO"
 }
 
@@ -26,11 +26,88 @@ POST {{urlUser}}/login
 Content-Type: application/json
 
 {
-  "email": "coni@gmail.com",
-  "password": "1234"
+  "email": "juan@gmail.com",
+  "password": "123"
 }
 
 ###
 
-### Obtener usuarios
-GET http://localhost:3000/usuarios
+### Obtener todos los usuarios
+GET {{urlUser}}
+
+###
+
+### Obtener un usuario por ID
+GET {{urlUser}}/e4e824bb-0094-4616-9bea-2769a60ebe0d
+
+###
+
+### Modificar usuario
+PUT {{urlUser}}/e4e824bb-0094-4616-9bea-2769a60ebe0d
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "email": "juan@gmail.com",
+  "rol": "PROFESOR"
+}
+
+###
+
+### Eliminar usuario
+DELETE {{urlUser}}/e4e824bb-0094-4616-9bea-2769a60ebe0d
+
+###
+
+### Crear materia
+POST {{urlMateria}}
+Content-Type: application/json
+
+{
+  "nombre": "Programacion",
+  "profesor_id": "e4e824bb-0094-4616-9bea-2769a60ebe0d"
+}
+
+###
+
+### Obtener materias
+GET {{urlMateria}}
+
+###
+
+### Obtener una materia
+GET {{urlMateria}}/0d1b2e32-a29c-422a-9528-df3f2f045b27
+
+###
+
+### Actualizar materia
+PUT {{urlMateria}}/0d1b2e32-a29c-422a-9528-df3f2f045b27
+Content-Type: application/json
+
+{
+  "nombre": "Programacion II",
+  "profesor_id": "e4e824bb-0094-4616-9bea-2769a60ebe0d"
+}
+
+###
+
+### Eliminar materia
+DELETE {{urlMateria}}/ID_DE_LA_MATERIA
+
+### Inscribir alumno
+
+POST {{urlAlumnoMateria}}
+Content-Type: application/json
+
+{
+    "alumno_id":"20023c8d-1d71-461a-80f7-7b53cc79412e",
+    "materia_id":"0d1b2e32-a29c-422a-9528-df3f2f045b27"
+}
+
+### Ver inscripciones
+
+GET {{urlAlumnoMateria}}
+
+### Materias que dicta un profesor
+
+GET {{urlMateria}}/profesor/e4e824bb-0094-4616-9bea-2769a60ebe0d

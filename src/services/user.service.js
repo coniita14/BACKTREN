@@ -1,6 +1,7 @@
 import { supabase } from "../database.js";
 import bcrypt from "bcrypt";
 
+// Obtener todos los usuarios
 export async function getAllUsersService() {
   const { data, error } = await supabase
     .from("usuarios")
@@ -12,6 +13,7 @@ export async function getAllUsersService() {
   return data;
 }
 
+// Obtener un usuario por ID
 export async function getUserService(id) {
   const { data, error } = await supabase
     .from("usuarios")
@@ -25,6 +27,7 @@ export async function getUserService(id) {
   return data;
 }
 
+// Crear usuario
 export async function createUserService(user) {
   const passwordHash = await bcrypt.hash(user.password, 10);
 
@@ -36,13 +39,15 @@ export async function createUserService(user) {
       password: passwordHash,
       rol: user.rol,
     })
-    .select();
+    .select()
+    .single();
 
   if (error) throw error;
 
   return data;
 }
 
+// Modificar usuario
 export async function updateUserService(id, user) {
   if (user.password) {
     user.password = await bcrypt.hash(user.password, 10);
@@ -52,30 +57,37 @@ export async function updateUserService(id, user) {
     .from("usuarios")
     .update({
       ...user,
-      updated_at: new Date(),
+      updated_at: new Date().toISOString(),
     })
     .eq("id", id)
-    .select();
+    .is("deleted_at", null)
+    .select()
+    .single();
 
   if (error) throw error;
 
   return data;
 }
 
+// Eliminar usuario (borrado lógico)
 export async function deleteUserService(id) {
   const { data, error } = await supabase
     .from("usuarios")
     .update({
-      deleted_at: new Date(),
+      deleted_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     })
     .eq("id", id)
-    .select();
+    .is("deleted_at", null)
+    .select()
+    .single();
 
   if (error) throw error;
 
   return data;
 }
 
+// Login
 export async function logInService(email, password) {
   const { data, error } = await supabase
     .from("usuarios")
