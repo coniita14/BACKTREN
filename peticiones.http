@@ -1,34 +1,37 @@
-@urlbase=https://backtrenconi.vercel.app
+@urlbase=http://localhost:3000
 @urlHealth={{urlbase}}/health
 @urlUser={{urlbase}}/usuarios
 @urlMateria={{urlbase}}/materias
 @urlAlumnoMateria={{urlbase}}/alumno-materia
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjBiNjRmMTgzLWU0ZjQtNGU1Yi05YmRhLTZjNGUxYTQ4ZDA0YSIsInJvbCI6IkFMVU1OTyIsImlhdCI6MTc4Njc0Mjg2NywiZXhwIjoxNzg2NzUwMDY3fQ.2QStfCuKAYqeTbZwkTBXLott8mUQu8gNR5yvkggTjiY
 ### Health
 GET {{urlHealth}}
 
 ###
+
+### LOGIN
+
+POST {{urlUser}}/login
+Content-Type: application/json
+
+{
+  "email": "co@gmail.com",
+  "password": "1234"
+}
 
 ### Crear usuario
 POST {{urlUser}}
 Content-Type: application/json
 
 {
-  "nombre": "Juan",
-  "email": "juan@gmail.com",
-  "password": "123",
+  "nombre": "Coni ",
+  "email": "co@gmail.com",
+  "password": "1234",
   "rol": "ALUMNO"
 }
 
 ###
 
-### Login
-POST {{urlUser}}/login
-Content-Type: application/json
-
-{
-  "email": "juan@gmail.com",
-  "password": "123"
-}
 
 ###
 
@@ -62,6 +65,7 @@ DELETE {{urlUser}}/e4e824bb-0094-4616-9bea-2769a60ebe0d
 ### Crear materia
 POST {{urlMateria}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "nombre": "Programacion",
@@ -77,11 +81,12 @@ GET {{urlMateria}}
 
 ### Obtener una materia
 GET {{urlMateria}}/0d1b2e32-a29c-422a-9528-df3f2f045b27
-
+Authorization: Bearer {{token}}
 ###
 
 ### Actualizar materia
 PUT {{urlMateria}}/0d1b2e32-a29c-422a-9528-df3f2f045b27
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -110,3 +115,4 @@ GET {{urlAlumnoMateria}}
 ### Materias que dicta un profesor
 
 GET {{urlbase}}/dictan/e4e824bb-0094-4616-9bea-2769a60ebe0d
+

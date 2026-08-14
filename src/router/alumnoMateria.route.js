@@ -4,10 +4,11 @@ import {
   inscribirAlumno,
   getInscripciones,
 } from "../controllers/alumnoMateria.controller.js";
+import { verifyToken } from "../security/auth.middleware.js";
 
 const router = Router();
 
-router.post("/", inscribirAlumno);
-router.get("/", getInscripciones);
+router.post("/", verifyToken, inscribirAlumno);
+router.get("/", verifyToken, getInscripciones);
 
 export default router;

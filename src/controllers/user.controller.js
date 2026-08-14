@@ -4,7 +4,7 @@ import {
   createUserService,
   updateUserService,
   deleteUserService,
-  logInService,
+  loginService,
 } from "../services/user.service.js";
 
 // Obtener todos
@@ -59,13 +59,23 @@ export async function deleteUser(req, res) {
 
 // Login
 export async function logIn(req, res) {
+  return login(req, res);
+}
+
+export async function login(req, res) {
   try {
     const { email, password } = req.body;
 
-    const result = await logInService(email, password);
+    const resultado = await loginService(email, password);
 
-    res.status(200).json(result);
+    if (!resultado.success) {
+      return res.status(401).json(resultado);
+    }
+
+    return res.status(200).json(resultado);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message,
+    });
   }
 }

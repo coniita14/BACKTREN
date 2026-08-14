@@ -1,5 +1,6 @@
 import { supabase } from "../database.js";
 import bcrypt from "bcrypt";
+import { crearToken } from "../security/token.js";
 
 // Obtener todos los usuarios
 export async function getAllUsersService() {
@@ -87,34 +88,36 @@ export async function deleteUserService(id) {
   return data;
 }
 
-// Login
-export async function logInService(email, password) {
-  const { data, error } = await supabase
+export async function loginService(email, password) {
+  const { data: user, error } = await supabase
     .from("usuarios")
     .select("*")
     .eq("email", email)
     .is("deleted_at", null)
     .single();
 
-  if (error || !data) {
+  if (error || !user) {
     return {
       success: false,
       message: "Usuario no encontrado",
     };
   }
 
-  const validPassword = await bcrypt.compare(password, data.password);
+  const passwordCorrecta = await bcrypt.compare(password, user.password);
 
-  if (!validPassword) {
+  if (!passwordCorrecta) {
     return {
       success: false,
       message: "Contraseña incorrecta",
     };
   }
 
+  // Crear token usando la función de security
+  const token = crearToken(user);
+
   return {
     success: true,
     message: "Login correcto",
-    usuario: data,
+    token: token,
   };
 }

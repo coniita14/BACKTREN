@@ -6,19 +6,41 @@ import {
   createUser,
   updateUser,
   deleteUser,
-  logIn,
+  login,
 } from "../controllers/user.controller.js";
+import { verifyToken } from "../security/auth.middleware.js";
+import { rateLimitMiddleware } from "../security/rateLimit.js";
 
 const router = Router();
 
-router.get("/", getAllUsers);
-router.get("/:id", getUser);
+router.get("/", verifyToken, rateLimitMiddleware({ max: 60 }), getAllUsers);
+router.get("/:id", verifyToken, rateLimitMiddleware({ max: 60 }), getUser);
+router.post(
+  "/",
+  rateLimitMiddleware({ max: 20, windowMs: 60 * 1000 }),
+  createUser,
+);
+router.put(
+  "/:id",
+  verifyToken,
+  rateLimitMiddleware({ max: 20, windowMs: 60 * 1000 }),
+  updateUser,
+);
+router.delete(
+  "/:id",
+  verifyToken,
+  rateLimitMiddleware({ max: 10, windowMs: 60 * 1000 }),
+  deleteUser,
+);
 
-router.post("/", createUser);
-router.post("/login", logIn);
-
-router.put("/:id", updateUser);
-
-router.delete("/:id", deleteUser);
+router.post(
+  "/login",
+  rateLimitMiddleware({
+    max: 5,
+    windowMs: 60 * 1000,
+    message: "Demasiados intentos de login. Intente nuevamente en 1 minuto.",
+  }),
+  login,
+);
 
 export default router;
