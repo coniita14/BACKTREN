@@ -27,7 +27,11 @@ export async function getMateria(req, res) {
 
 export async function createMateria(req, res) {
   try {
-    const materia = await createMateriaService(req.body);
+    const data = {
+      ...req.body,
+      profesor_id: req.body.profesor_id || req.user?.id,
+    };
+    const materia = await createMateriaService(data);
     res.status(201).json(materia);
   } catch (error) {
     res.status(500).json({ error: error.message });
